@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-import bycrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { model, Schema, Model, Document } from 'mongoose';
@@ -52,13 +51,13 @@ UserSchema.pre<IUser>("save", async function (next: any) {
     if (!this.isModified('password')) {
         return next();
     }
-    const salt = await bycrypt.genSalt(10);
-    this.password = bycrypt.hashSync(this.password, 10);
+    const salt = await bcrypt.genSalt(10);
+    this.password = bcrypt.hashSync(this.password, 10);
     next();
 });
 
 UserSchema.methods.matchPassword= async function (password:string) {
-    return await bycrypt.compare(password,this.password)   
+    return await bcrypt.compare(password,this.password)   
 }
 
 UserSchema.methods.getSignedToken= function (password:string) {
