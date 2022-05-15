@@ -4,8 +4,11 @@ import crypto from 'crypto';
 import { model, Schema, Model, Document } from 'mongoose';
 
 export interface IUser extends Document {
+    getResetPasswordToken():string;
     getSignedToken(): string;
     matchPassword(password: string): boolean | PromiseLike<boolean>;
+    resetPasswordToken: string|undefined;
+    resetPasswordExpire: string|undefined;
     firstName: string,
     username: string;
     password: string;
@@ -18,7 +21,7 @@ const UserSchema: Schema = new Schema({
         type: String,
         uniqe: false,
         required: [true, "Can't be blank"], 
-        index: true,
+        //index: true,
     },
     username: {
         type: String,
@@ -44,6 +47,8 @@ const UserSchema: Schema = new Schema({
         type: Boolean, 
         default: false,
     },
+    resetPasswordToken: String,
+    resetPasswordExpire: String,
 });
 
 UserSchema.pre<IUser>("save", async function (next: any) {
@@ -59,7 +64,7 @@ UserSchema.methods.matchPassword= async function (password:string) {
     return await bcrypt.compare(password,this.password)   
 }
 
-UserSchema.methods.getSignedToken= function (password:string) {
+UserSchema.methods.getSignedToken= function () {
     return jwt.sign({id:this._id},process.env.JWT_SECRET!,{
         expiresIn:process.env.JWT_EXPIRE
     })   
