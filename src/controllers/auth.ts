@@ -4,19 +4,19 @@ import {ErrorResponse} from '../utils/errorResponse';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken'
 
-
 exports.register= async (req:Request,res:Response,next:any)=>{
-    const {username,email,password,isAdmin, profile} = req.body;
+    const {firstName, username,email,password,isAdmin} = req.body;
     try {
         const user:IUser= await User.create({
+            firstName,
             username,
             email,
             password,
             isAdmin,
-            profile
         }); 
         user.save().then(() => {
-            res.json({ message: "User created"});
+            res
+            .json({ message: "User created"});
         });
     } catch (error:any) {
         next(error);
@@ -38,7 +38,8 @@ exports.login = async (req:Request,res:Response,next:any)=>{
             return next(new ErrorResponse("Invalid Credentials",401))
         } if (user){
             const token = jwt.sign(
-            { id: user._id, username: user.username, isAdmin: user.isAdmin }, 'YOUR_SECRET_KEY'
+                {id:user._id, username:user.username, isAdmin:user.isAdmin},process.env.JWT_SECRET!,{
+                    expiresIn:process.env.JWT_EXPIRE}
           );
             return res
             .cookie("access_token", token, { httpOnly: true })
@@ -52,4 +53,10 @@ exports.login = async (req:Request,res:Response,next:any)=>{
     }
 }
 
+exports.logout = async (req:Request,res:Response,next:any)=>{
+    return res
+    .clearCookie("access_token")
+    .status(200)
+    .json({ message: "User logged out" });
+}
 

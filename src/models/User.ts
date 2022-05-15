@@ -6,17 +6,20 @@ import { model, Schema, Model, Document } from 'mongoose';
 export interface IUser extends Document {
     getSignedToken(): string;
     matchPassword(password: string): boolean | PromiseLike<boolean>;
+    firstName: string,
     username: string;
     password: string;
     email: string;
     isAdmin: boolean;
-    profile: {
-        name: String,
-        avatar: String,
-    }
 }
 
 const UserSchema: Schema = new Schema({
+    firstName: {
+        type: String,
+        uniqe: false,
+        required: [true, "Can't be blank"], 
+        index: true,
+    },
     username: {
         type: String,
         uniqe: true,
@@ -41,10 +44,6 @@ const UserSchema: Schema = new Schema({
         type: Boolean, 
         default: false,
     },
-    profile: {
-        name: String,
-        avatar: String,
-    }
 });
 
 UserSchema.pre<IUser>("save", async function (next: any) {
