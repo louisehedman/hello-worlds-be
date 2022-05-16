@@ -1,5 +1,5 @@
 import "dotenv/config";
-import router from "./routes/auth";
+import router from "./routes/router";
 import express from 'express';
 import { connectDb } from "./database/connection";
 import cookieParser from 'cookie-parser';
