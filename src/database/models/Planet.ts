@@ -7,7 +7,7 @@ interface PlanetInterface {
   avgTemp: number;
   mass: object;
   grav: number;
-  volume: object;
+  radius: number;
   fromEarth?: number;
   travTime?: number;
   description?: string;
@@ -21,9 +21,9 @@ const planetSchema = new Schema<PlanetInterface>({
   avgTemp: { type: Number },
   mass: { type: Object },
   grav: { type: Number },
-  volume: { type: Object },
-  fromEarth: { type: Number },
-  travTime: { type: Number },
+  radius: { type: Number },
+  fromEarth: { type: Number }, // Distance from Earth
+  travTime: { type: Number }, // Travel time from Earth
   description: { type: String },
   image: { type: String },
 });
