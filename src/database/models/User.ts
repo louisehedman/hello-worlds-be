@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import mongoose, { Schema } from "mongoose";
 
 
-interface IUser {
+interface UserInterface {
     isModified(arg0: string);
     matchPassword(password: string): boolean | PromiseLike<boolean>;
     resetPasswordToken: string|undefined;
@@ -15,7 +15,7 @@ interface IUser {
     isAdmin: boolean;
 }
 
-const UserSchema: Schema = new Schema<IUser>({
+const UserSchema: Schema = new Schema<UserInterface>({
     firstName: {
         type: String,
         uniqe: false,
@@ -49,7 +49,7 @@ const UserSchema: Schema = new Schema<IUser>({
     resetPasswordExpire: String,
 });
 
-UserSchema.pre<IUser>("save", async function (next: any) {
+UserSchema.pre<UserInterface>("save", async function (next: any) {
     if (!this.isModified('password')) {
         return next();
     }
@@ -62,7 +62,7 @@ UserSchema.methods.matchPassword = async function (password:string) {
     return await bcrypt.compare(password,this.password)   
 }
 
-const User = mongoose.model<IUser>("User", UserSchema);
+const User = mongoose.model<UserInterface>("User", UserSchema);
 
 
 export default User;
