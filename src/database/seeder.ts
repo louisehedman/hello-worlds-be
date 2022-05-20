@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import Planet from "./models/Planet";
 import mongoose from "mongoose";
+import { ErrorResponse } from "../utils/errorResponse";
 
 const seedPlanets = async () => {
   const db = mongoose.connection;
@@ -11,14 +12,14 @@ const seedPlanets = async () => {
     await db
       .dropCollection("planets")
       .then(() => {
-        console.log(`${db.name}.planets collention dropped`);
+        console.log(`${db.name}.planets collection dropped`);
       })
       .then(() => {
         Planet.insertMany(planets);
       });
     console.log(`${db.name}.planets collection created, documents inserted`);
   } catch (error) {
-    console.log(error);
+    return new ErrorResponse(error, 500);
   }
 };
 
