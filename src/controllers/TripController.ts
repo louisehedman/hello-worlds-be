@@ -2,7 +2,7 @@ import { Response, Request } from 'express';
 import User from '../database/models/User';
 import { ErrorResponse } from '../utils/errorResponse';
 
-const createList = async (req: Request, res: Response, next: any) => {
+const createTrip = async (req: Request, res: Response, next: any) => {
   const { destination, travTime } = req.body;
   const { id } = req.params;
 
@@ -24,4 +24,4 @@ const createList = async (req: Request, res: Response, next: any) => {
   }
 }
 
-export { createList };
+export { createTrip };
