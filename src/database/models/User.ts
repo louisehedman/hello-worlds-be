@@ -1,7 +1,30 @@
 import bcrypt from 'bcryptjs';
+import { ObjectID } from 'bson';
 import jwt from 'jsonwebtoken';
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
+interface TripInterface {
+    destination: ObjectID;
+    travTime: number; 
+}
+
+const TripSchema: Schema = new Schema<TripInterface>({
+    destination: {
+        type: ObjectID,
+        unique: false,
+        required: true
+    },
+    travTime: {
+        type: Number,
+        unique: false,
+        required: false
+    }
+}, 
+{
+    timestamps: true
+})
+
+const Trip = mongoose.model<TripInterface>("Trip", TripSchema);
 
 interface UserInterface {
     isModified(arg0: string);
@@ -13,6 +36,7 @@ interface UserInterface {
     password: string;
     email: string;
     isAdmin: boolean;
+    list: Types.Array<object>
 }
 
 const UserSchema: Schema = new Schema<UserInterface>({
@@ -45,6 +69,11 @@ const UserSchema: Schema = new Schema<UserInterface>({
         type: Boolean, 
         default: false,
     },
+    list: {
+        type: [TripSchema],
+        required: false
+
+    },
     resetPasswordToken: String,
     resetPasswordExpire: String,
 });
@@ -53,7 +82,7 @@ UserSchema.pre<UserInterface>("save", async function (next: any) {
     if (!this.isModified('password')) {
         return next();
     }
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10); 
     this.password = bcrypt.hashSync(this.password, 10);
     next();
 });
