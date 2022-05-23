@@ -24,8 +24,6 @@ const TripSchema: Schema = new Schema<TripInterface>({
     timestamps: true
 })
 
-const Trip = mongoose.model<TripInterface>("Trip", TripSchema);
-
 interface UserInterface {
     isModified(arg0: string);
     matchPassword(password: string): boolean | PromiseLike<boolean>;
