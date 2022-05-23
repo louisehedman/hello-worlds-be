@@ -11,7 +11,7 @@ const getList = async (req: Request, res: Response, next: any) => {
     if (user) {
       res.status(200).json({
         success: true,
-        list: user.list
+        list: user.tripList
       })
     } else {
       res.status(404).json({ success: false, message: 'Could not get list' })
@@ -21,6 +21,20 @@ const getList = async (req: Request, res: Response, next: any) => {
   }
 }
 
+
+// const getTrip = async (req: Request, res: Response, next: any) => {
+//   const userId = req.params.userId;
+//   const tripId = req.params.tripId;
+
+  
+//     const user = await User.findById(userId);
+
+//     if (user) {
+//       const trip = user.tripList.find(trip => trip._id === tripId);
+//     }
+// }
+
+
 const createTrip = async (req: Request, res: Response, next: any) => {
   const { destination, travTime } = req.body;
   const { id } = req.params;
@@ -29,7 +43,7 @@ const createTrip = async (req: Request, res: Response, next: any) => {
     const user = await User.findById(id);
 
     const updateList = await User.findByIdAndUpdate(id, {
-      list: [...user.list, {destination, travTime}]
+      tripList: [...user.tripList, {destination, travTime}]
     }, { new: true });
 
     if (updateList) {

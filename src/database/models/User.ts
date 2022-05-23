@@ -34,7 +34,7 @@ interface UserInterface {
     password: string;
     email: string;
     isAdmin: boolean;
-    list: Types.Array<object>
+    tripList: Types.Array<object>
 }
 
 const UserSchema: Schema = new Schema<UserInterface>({
@@ -67,7 +67,7 @@ const UserSchema: Schema = new Schema<UserInterface>({
         type: Boolean, 
         default: false,
     },
-    list: {
+    tripList: {
         type: [TripSchema],
         required: false
 
