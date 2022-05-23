@@ -100,6 +100,7 @@
     "avgTemp": 210,
     "earthDistance": 56000000,
     "shortDescription": "Mars is cold and lifeless. It is thought that large lakes and oceans may once have been on this planet. Mars has 2 moons.",
+    "description": "Mars - named after the Roman war god, and, by the ancient Egyptians simply called \"the red one\" -  is the second shortest voyage in our offering. Enjoy only 116 days on Hello World(s) with your own cozy cabin, full access to our grade A fitness areas and amusement areas, three stellarly nutritious meals per day from our well renowned chef team. We guarantee a most delightful journey.\nUpon arriving at our colorful destination you can expect beautiful scenery. The high amount of iron oxide in the soil gives the planet its beautiful red color that we all recognize and love. \nThe high amount of dust in the atmosphere makes the sky too appear reddish, which lets blue light through and will make sunrises and sunsets look blue. The opposite to what we see on earth. Isn't that cool?\nIf you like sand between your toes you have come to the right place, but\nbe sure to pack your warmest clothes because, contrary to what you might think, with its vast desert dunes, Mars is pretty chilly. With an average temperature of -63 °C, this is not a place you go to for parasols and ball games on the beach. Unless you are well-clothed of course.\nIf you are a climber, we have the challenge for you. Because here on Mars we have the Olympus Mons, the tallest mountain in the solar system. This is our main attraction, which draws professional climbers, enthusiasts and beginners but also others who simply enjoy experiencing nature's true wonders. Although it probably is the highest rock you will ever climb with its 21 km (more than twice as high as Mount Everest!) height, Olympus Mons is suitable for not only the most athletic individual but also children older than six years old and elderly people, due to the gravitational support. The gravity on Mars is 37% that of Earth's, which makes our Mons Expeditions feel like a light bounce for every earthling. There are plenty of checkpoints along the way to the top where you can sit down for a drink or a snack. \nMars has two moons, Phobos and Deimos, named after Ares' (the Greek counterpart of the roman god Mars) sons.\nPhobos orbits only 6000 km above the surface, making it the moon orbit closest to its planet that we know. It revolves around the planet three times per day. The more distant Deimos revolves around mars in 30 hours. \nMars has seasons similar to Earth, but they are longer. Since a day on Mars is similar to Earth with its 24.37 hours, but a year is almost twice as long, 687 days.\n",
     "image": "https://solarsystem.nasa.gov/system/feature_items/images/19_mars.png"
   },
   {
@@ -142,7 +143,7 @@
     "image": "https://solarsystem.nasa.gov/system/resources/detail_files/611_PIA01492.jpg"
   },
   {
-    "englishName": "Pluto",
+    "name": "Pluto",
     "moons": [
       { "moon": "Charon" },
       { "moon": "Nix" },
