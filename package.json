@@ -6,8 +6,7 @@
   "scripts": {
     "start": "npx tsc && nodemon src/server.ts",
     "lint": "eslint . --ext .ts",
-    "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",

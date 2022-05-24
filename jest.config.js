@@ -1,3 +1,5 @@
-export const preset = 'ts-jest';
-export const testEnvironment = 'node';
-export const setupFiles = ['dotenv/config'];
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+};
