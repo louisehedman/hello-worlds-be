@@ -17,7 +17,7 @@ afterAll(async () => {
 
 describe('planet test', () => {
     it('can be created correctly', async () => {
-        // expect that one assertion will be made
+        // expect that two assertions will be made
         expect.assertions(2)
         // create new planet model instance
         const planet = new Planet()
