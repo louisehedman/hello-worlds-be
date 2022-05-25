@@ -59,8 +59,8 @@ UserSchema.pre<UserInterface>("save", async function (next: any) {
     if (!this.isModified('password')) {
         return next();
     }
-    const salt = await bcrypt.genSalt(10); 
-    this.password = bcrypt.hashSync(this.password, 10);
+    const salt = await bcrypt.genSalt(10);
+    this.password = bcrypt.hashSync(this.password, 10); //Använda saltet istället för 10?
     next();
 });
 
