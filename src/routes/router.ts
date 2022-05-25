@@ -1,7 +1,15 @@
 import { Router } from "express";
+import cors, { CorsOptions } from "cors";
 import { register, login, logout } from "../controllers/AuthController";
 import { getAllPlanets, getPlanet } from "../controllers/PlanetController";
 const router = Router();
+
+// Configure cors options allowed origins
+/*
+const corsOptions: CorsOptions = {origin: [""]}
+*/
+
+router.use(cors());
 
 // User routes
 router.post("/register", register);
