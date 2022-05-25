@@ -2,7 +2,7 @@ import { ObjectID } from 'bson';
 import { Schema } from "mongoose";
 
 interface TripInterface {
-  _id: string;
+  _id: ObjectID;
   destination: ObjectID;
   travTime: number; 
 }
