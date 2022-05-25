@@ -18,7 +18,7 @@ afterAll(async () => {
 describe('user test', () => {
     it('can be created correctly', async () => {
         // expect that four assertions will be made
-        expect.assertions(4)
+        expect.assertions(5)
         // create new user model instance
         const user = await User.create({
             firstName: 'Harry',
@@ -39,6 +39,8 @@ describe('user test', () => {
         expect(userInDb.username).toEqual('harrypotter')
         // check that email is expected
         expect(userInDb.email).toEqual('harry@potter.test')
+        // check that password is expected
+        expect(userInDb.password).not.toEqual('12345678')
         // check that role is expected
         expect(userInDb.isAdmin).toEqual(false)
     });
