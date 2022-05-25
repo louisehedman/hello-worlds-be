@@ -5,11 +5,11 @@ import { getAllPlanets, getPlanet } from "../controllers/PlanetController";
 const router = Router();
 
 // Configure cors options allowed origins
-/*
-const corsOptions: CorsOptions = {origin: [""]}
-*/
+const corsOptions: CorsOptions = {
+  origin: ["http://localhost:3000", "https://helloworldstraveling.netlify.app"],
+};
 
-router.use(cors());
+router.use(cors(corsOptions));
 
 // User routes
 router.post("/register", register);
