@@ -1,28 +1,7 @@
 import bcrypt from 'bcryptjs';
-import { ObjectID } from 'bson';
 import jwt from 'jsonwebtoken';
 import mongoose, { Schema, Types } from "mongoose";
-
-interface TripInterface {
-    destination: ObjectID;
-    travTime: number; 
-}
-
-const TripSchema: Schema = new Schema<TripInterface>({
-    destination: {
-        type: ObjectID,
-        unique: false,
-        required: true
-    },
-    travTime: {
-        type: Number,
-        unique: false,
-        required: false
-    }
-}, 
-{
-    timestamps: true
-})
+import { TripInterface, TripSchema } from './Trip';
 
 interface UserInterface {
     isModified(arg0: string);
@@ -34,7 +13,7 @@ interface UserInterface {
     password: string;
     email: string;
     isAdmin: boolean;
-    tripList: Types.Array<object>
+    tripList: Types.DocumentArray<TripInterface>
 }
 
 const UserSchema: Schema = new Schema<UserInterface>({
@@ -90,6 +69,5 @@ UserSchema.methods.matchPassword = async function (password:string) {
 }
 
 const User = mongoose.model<UserInterface>("User", UserSchema);
-
 
 export default User;
