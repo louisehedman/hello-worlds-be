@@ -7,6 +7,13 @@ import { getAllPlanets, getPlanet } from '../controllers/PlanetController';
 
 const router = Router();
 
+// Configure cors options allowed origins
+const corsOptions: CorsOptions = {
+  origin: ["http://localhost:3000", "https://helloworldstraveling.netlify.app"],
+};
+
+router.use(cors(corsOptions));
+
 // ROUTES
 // Public routes
 router.post('/register', register);
@@ -21,12 +28,5 @@ router.post('/logout', authorization, logout);
 router.get('/get-list/:id', authorization, getList);
 router.get('/get-trip/:userId/:tripId', authorization, getTrip);
 router.patch('/create-trip/:id', authorization, createTrip);
-
-// Configure cors options allowed origins
-const corsOptions: CorsOptions = {
-  origin: ["http://localhost:3000", "https://helloworldstraveling.netlify.app"],
-};
-
-router.use(cors(corsOptions));
 
 export default router;
