@@ -1,62 +1,77 @@
-import { Response, Request } from 'express';
-import User from '../database/models/User';
-import { ErrorResponse } from '../utils/errorResponse';
+import { Response, Request } from "express";
+import User from "../database/models/User";
 
-const getList = async (req: Request, res: Response, next: any) => {
+
+const getList = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
     const user = await User.findById(id);
 
     if (user) {
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
-        list: user.tripList
-      })
+        list: user.tripList,
+      });
     } else {
-      res.status(404).json({ success: false, message: 'Could not get list' })
+      return res.status(404).json({
+        success: false,
+        message: "Not found",
+      });
     }
   } catch (error) {
-    return next(new ErrorResponse(error.message, 500))
+    return res.status(500).json({ success: false, error });
   }
-}
+};
 
+const getTrip = async (req: Request, res: Response) => {
+  const { userId, tripId } = req.params;
 
-// const getTrip = async (req: Request, res: Response, next: any) => {
-//   const userId = req.params.userId;
-//   const tripId = req.params.tripId;
+  try {
+    const user = await User.findById(userId);
 
-  
-//     const user = await User.findById(userId);
+    if (user) {
+      const trip = user.tripList.id(tripId);
 
-//     if (user) {
-//       const trip = user.tripList.find(trip => trip._id === tripId);
-//     }
-// }
+      if (trip) {
+        return res.status(200).json({ success: true, trip });
+      } else {
+        return res.status(404).json({ success: false, message: "Not found" });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ success: false, error });
+  }
+};
 
-
-const createTrip = async (req: Request, res: Response, next: any) => {
+const createTrip = async (req: Request, res: Response) => {
   const { destination, travTime } = req.body;
   const { id } = req.params;
 
   try {
     const user = await User.findById(id);
 
-    const updateList = await User.findByIdAndUpdate(id, {
-      tripList: [...user.tripList, {destination, travTime}]
-    }, { new: true });
+    const updateList = await User.findByIdAndUpdate(
+      id,
+      {
+        tripList: [...user.tripList, { destination, travTime }],
+      },
+      { new: true }
+    );
 
     if (updateList) {
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
-        updateList
-      })
+        updateList,
+      });
     } else {
-      res.status(404).json({ success: false, message: 'Could not update list' })
+      return res
+        .status(404)
+        .json({ success: false, message: "Could not update list" });
     }
   } catch (error) {
-    return next(new ErrorResponse(error.message, 500))
+    return res.status(500).json({ success: false, error });
   }
-}
+};
 
-export { getList, createTrip };
+export { getList, createTrip, getTrip };
