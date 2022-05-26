@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "start": "node dist/src/server.js",
+    "start": "npx tsc && node dist/server.js",
     "dev": "npx tsc && nodemon src/server.ts",
     "seed": "npx tsc && npx ts-node src/server.ts seed",
     "lint": "eslint . --ext .ts",
@@ -43,6 +43,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.6.0",
     "mongoose": "^6.3.3",
-    "nodemailer": "^6.7.5"
+    "nodemailer": "^6.7.5",
+    "typescript": "^4.7.2"
   }
 }
