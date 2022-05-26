@@ -25,6 +25,7 @@ router.get("/planets/:planet", getPlanet);
 
 // Protected routes
 router.post('/logout', authorization, logout);
+router.get('/user/:id', getUser);
 router.get('/get-list/:id', authorization, getList);
 router.get('/get-trip/:userId/:tripId', authorization, getTrip);
 router.patch('/create-trip/:id', authorization, createTrip);
