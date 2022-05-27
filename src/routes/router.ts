@@ -4,6 +4,7 @@ import cors, { CorsOptions } from "cors";
 import { register, login, logout, authorization } from '../controllers/AuthController';
 import { getList, createTrip, getTrip, editTrip, deleteTrip } from '../controllers/TripController';
 import { getAllPlanets, getPlanet } from '../controllers/PlanetController';
+import { getUser } from '../controllers/UserController';
 
 const router = Router();
 

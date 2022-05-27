@@ -1,7 +1,6 @@
 import { Response, Request } from "express";
 import User from "../database/models/User";
 
-
 const getList = async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -45,21 +44,24 @@ const getTrip = async (req: Request, res: Response) => {
 };
 
 const createTrip = async (req: Request, res: Response) => {
-  const { destination, travTime } = req.body;
+  const { destination, travTime, departure, firstClass } = req.body;
   const { id } = req.params;
 
-  if (destination && travTime) {
+  if (destination && travTime && departure && firstClass !== undefined) {
     try {
       const user = await User.findById(id);
-  
+
       const updateList = await User.findByIdAndUpdate(
         id,
         {
-          tripList: [...user.tripList, { destination, travTime }],
+          tripList: [
+            ...user.tripList,
+            { destination, travTime, departure, firstClass },
+          ],
         },
         { new: true }
       );
-  
+
       if (updateList) {
         return res.status(200).json({
           success: true,
@@ -74,28 +76,34 @@ const createTrip = async (req: Request, res: Response) => {
       return res.status(500).json({ success: false, error });
     }
   } else {
-    return res.status(400).json({ success: false, message: "All fields must be populated" })
-  } 
+    return res
+      .status(400)
+      .json({ success: false, message: "All fields must be populated" });
+  }
 };
 
 const editTrip = async (req: Request, res: Response) => {
-  const { destination, travTime } = req.body;
+  const { destination, travTime, departure, firstClass } = req.body;
   const { userId, tripId } = req.params;
 
-  if (destination && travTime) {
+  if (destination && travTime && departure) {
     try {
-      const updatedUser = await User.findOneAndUpdate({
-          "_id": userId, "tripList._id": tripId
+      const updatedUser = await User.findOneAndUpdate(
+        {
+          _id: userId,
+          "tripList._id": tripId,
         },
         {
-          "$set": {
+          $set: {
             "tripList.$.destination": destination,
-            "tripList.$.travTime": travTime
-          }
+            "tripList.$.travTime": travTime,
+            "tripList.$.departure": departure,
+            "tripList.$.firstClass": firstClass
+          },
         },
         { new: true }
       );
-  
+
       if (updatedUser) {
         return res.status(200).json({ success: true, updatedUser });
       } else {
@@ -107,9 +115,11 @@ const editTrip = async (req: Request, res: Response) => {
       return res.status(500).json({ success: false, error });
     }
   } else {
-    return res.status(400).json({ success: false, message: "All fields must be populated" })
+    return res
+      .status(400)
+      .json({ success: false, message: "All fields must be populated" });
   }
-}
+};
 
 const deleteTrip = async (req: Request, res: Response) => {
   const { userId, tripId } = req.params;
@@ -119,14 +129,14 @@ const deleteTrip = async (req: Request, res: Response) => {
 
     user.tripList.id(tripId).remove((err, result) => {
       if (result) {
-        return res.status(200).json({ success: true, result })
+        return res.status(200).json({ success: true, result });
       } else {
-        return res.status(400).json({ success: false, err })
+        return res.status(400).json({ success: false, err });
       }
-    })
+    });
   } catch (error) {
     return res.status(500).json({ success: false, error });
   }
-}
+};
 
 export { getList, getTrip, createTrip, editTrip, deleteTrip };
