@@ -57,7 +57,7 @@ const login = async (req: Request, res: Response, next: any) => {
   }
 };
 
-const logout = async (res: Response) => {
+const logout = async (req: Request, res: Response) => {
   return res
     .clearCookie("access_token")
     .status(200)
@@ -72,10 +72,10 @@ const authorization = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const data = jwt.verify(token, "YOUR_SECRET_KEY");
+    const data = jwt.verify(token, process.env.JWT_SECRET);
     return next();
   } catch {
-    return res.status(403).json({ message: "No token" });
+    return res.status(403).json({ message: "Error" });
   }
 };
 
