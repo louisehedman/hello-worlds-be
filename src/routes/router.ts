@@ -2,7 +2,7 @@ import { Router } from "express";
 import cors, { CorsOptions } from "cors";
 
 import { register, login, logout, authorization } from '../controllers/AuthController';
-import { getList, createTrip, getTrip, editTrip, deleteTrip } from '../controllers/TripController';
+import { getList, createTrip, getTrip, editTrip } from '../controllers/TripController';
 import { getAllPlanets, getPlanet } from '../controllers/PlanetController';
 import { getUser } from '../controllers/UserController';
 
@@ -31,6 +31,5 @@ router.get('/get-list/:id', authorization, getList);
 router.get('/get-trip/:userId/:tripId', authorization, getTrip);
 router.patch('/create-trip/:id', authorization, createTrip);
 router.patch('/edit-trip/:userId/:tripId', authorization, editTrip);
-router.patch('/delete-trip/:userId/:tripId', authorization, deleteTrip);
 
 export default router;
