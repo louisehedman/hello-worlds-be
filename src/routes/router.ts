@@ -21,11 +21,11 @@ router.post('/register', register);
 router.post('/login', login);
 
 // Planet routes
-router.get("/planets", getAllPlanets);
-router.get("/planets/:planet", getPlanet);
+router.get('/planets', getAllPlanets);
+router.get('/planets/:planet', getPlanet);
 
 // Protected routes
-router.post('/logout', authorization, logout);
+router.post('/logout', logout);
 router.get('/user/:id', getUser);
 router.get('/get-list/:id', authorization, getList);
 router.get('/get-trip/:userId/:tripId', authorization, getTrip);
