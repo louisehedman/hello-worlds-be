@@ -17,8 +17,12 @@ const getAllPlanets = (req: Request, res: Response) => {
 
 // Get single planet, planet route parameter must be Capitalized.
 const getPlanet = (req: Request, res: Response) => {
-  Planet.findOne(
-    { name: req.params.planet },
+  Planet.findOne({
+    $or: [
+      { name: req.params.planet },
+      { _id: req.params.planet }
+    ]
+  },
     function (err: Error, planet: mongoose.Document) {
       if (!planet) {
         return res.status(404).json("No planet");
