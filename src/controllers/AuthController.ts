@@ -46,7 +46,15 @@ const login = async (req: Request, res: Response, next: any) => {
         }
       );
       return res
-        .cookie("access_token", token, { httpOnly: true })
+        .set('Access-Control-Allow-Origin', req.headers.origin)
+        .set('Access-Control-Allow-Credentials', 'true')
+        .set('Access-Control-Expose-Headers', 
+        'date, etag, access-control-allow-origin, access-control-allow-credentials')
+        .cookie("access_token", token, { 
+          httpOnly: true,
+          sameSite: 'strict',
+          path: '/',
+        })
         .status(200)
         .json({ message: "User logged in" });
     } else {
