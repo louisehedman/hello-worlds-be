@@ -46,7 +46,15 @@ const login = async (req: Request, res: Response, next: any) => {
         }
       );
       return res
-        .cookie("access_token", token, { httpOnly: true })
+        .set('Access-Control-Allow-Origin', req.headers.origin)
+        .set('Access-Control-Allow-Credentials', 'true')
+        .set('Access-Control-Expose-Headers', 
+          'date, etag, access-control-allow-origin, access-control-allow-credentials')
+        .cookie("access_token", token, { 
+          httpOnly: true,
+          sameSite: 'strict',
+          path: '/',
+        })
         .status(200)
         .json({ message: "User logged in" });
     } else {
@@ -57,9 +65,17 @@ const login = async (req: Request, res: Response, next: any) => {
   }
 };
 
-const logout = async (res: Response) => {
+const logout = async (req: Request, res: Response) => {
   return res
-    .clearCookie("access_token")
+    .set('Access-Control-Allow-Origin', req.headers.origin)
+    .set('Access-Control-Allow-Credentials', 'true')
+    .set('Access-Control-Expose-Headers', 
+      'date, etag, access-control-allow-origin, access-control-allow-credentials')
+    .clearCookie("access_token", {
+      httpOnly: true,
+      sameSite: 'strict',
+      path: '/',
+    })
     .status(200)
     .json({ message: "User logged out" });
 };
@@ -72,10 +88,10 @@ const authorization = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const data = jwt.verify(token, "YOUR_SECRET_KEY");
+    const data = jwt.verify(token, process.env.JWT_SECRET);
     return next();
   } catch {
-    return res.status(403).json({ message: "No token" });
+    return res.status(403).json({ message: "Error" });
   }
 };
 

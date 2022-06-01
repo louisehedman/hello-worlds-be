@@ -27,15 +27,15 @@ describe('user test', () => {
             password: '12345678',
             isAdmin: false
         })
-        // set some test properties
         await user.save()
+
         // find inserted user by username
         const userInDb = await User.findOne({username: 'harrypotter'}).exec()
-
         console.log('User document from memory-db', userInDb)
+        
         // check that first name is expected
         expect(userInDb.firstName).toEqual('Harry')
-        // check that user is expected
+        // check that username is expected
         expect(userInDb.username).toEqual('harrypotter')
         // check that email is expected
         expect(userInDb.email).toEqual('harry@potter.test')
