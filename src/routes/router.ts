@@ -9,9 +9,8 @@ import { getUser } from '../controllers/UserController';
 const router = Router();
 
 // Configure cors options allowed origins
-//"http://localhost:3000", "https://helloworldstraveling.netlify.app"
 const corsOptions: CorsOptions = {
-  origin: ["*"],
+  origin: ["http://localhost:3000", "https://helloworldstraveling.netlify.app"],
   credentials: true
 };
 
