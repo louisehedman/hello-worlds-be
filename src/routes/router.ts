@@ -1,13 +1,12 @@
 import { Router } from "express";
 import cors, { CorsOptions } from "cors";
-
 import { register, login, logout, authorization } from '../controllers/AuthController';
 import { getList, createTrip, getTrip, editTrip } from '../controllers/TripController';
 import { getAllPlanets, getPlanet } from '../controllers/PlanetController';
+import { getBlogs, getBlog } from "../controllers/BlogController";
 import { getUser } from '../controllers/UserController';
 
 const router = Router();
-
 // Configure cors options allowed origins
 const corsOptions: CorsOptions = {
   origin: ["http://localhost:3000", "https://helloworldstraveling.netlify.app"],
@@ -25,9 +24,13 @@ router.post('/login', login);
 router.get('/planets', getAllPlanets);
 router.get('/planets/:planet', getPlanet);
 
+// Blogs routes
+router.get("/blogs", getBlogs);
+router.get("/blogs/:id", getBlog);
+
 // Protected routes
-router.post('/logout', logout);
-router.get('/user/:id', getUser);
+router.post('/logout', authorization, logout);
+router.get('/user/:id', authorization, getUser);
 router.get('/get-list/:id', authorization, getList);
 router.get('/get-trip/:userId/:tripId', authorization, getTrip);
 router.patch('/create-trip/:id', authorization, createTrip);

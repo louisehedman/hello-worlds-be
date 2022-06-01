@@ -1,6 +1,7 @@
 import Planet from "../database/models/Planet";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 
 // Get all planets
 const getAllPlanets = (req: Request, res: Response) => {
@@ -17,12 +18,18 @@ const getAllPlanets = (req: Request, res: Response) => {
 
 // Get single planet, planet route parameter must be Capitalized.
 const getPlanet = (req: Request, res: Response) => {
-  Planet.findOne({
-    $or: [
-      { name: req.params.planet },
-      { _id: req.params.planet }
-    ]
-  },
+
+  const condition = () => {
+    if (mongoose.isValidObjectId(req.params.planet)){
+      return {_id: new ObjectId(req.params.planet)}
+    } else {
+      return {name: req.params.planet}
+    }
+  }
+
+  Planet.findOne(
+    condition()
+  ,
     function (err: Error, planet: mongoose.Document) {
       if (!planet) {
         return res.status(404).json("No planet");
