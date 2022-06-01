@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import listEndpoints from 'express-list-endpoints';
 
 import { seedPlanets } from "./database/seeder";
+import { seedBlogs } from "./database/seeder";
 import { connectDb } from "./database/connection";
 
 const app = express();
@@ -27,4 +28,5 @@ connectDb(dbURI);
 if (process.argv.includes("seed")) {
   console.log("seeding planets...");
   seedPlanets();
+  seedBlogs();
 }
