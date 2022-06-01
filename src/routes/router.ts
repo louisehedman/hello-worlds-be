@@ -11,6 +11,7 @@ const router = Router();
 // Configure cors options allowed origins
 const corsOptions: CorsOptions = {
   origin: ["http://localhost:3000", "https://helloworldstraveling.netlify.app"],
+  credentials: true
 };
 
 router.use(cors(corsOptions));
