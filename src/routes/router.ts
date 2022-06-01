@@ -7,10 +7,10 @@ import { getAllPlanets, getPlanet } from '../controllers/PlanetController';
 import { getUser } from '../controllers/UserController';
 
 const router = Router();
-
+//http://localhost:3000", "https://helloworldstraveling.netlify.app
 // Configure cors options allowed origins
 const corsOptions: CorsOptions = {
-  origin: ["http://localhost:3000", "https://helloworldstraveling.netlify.app"],
+  origin: ["*"],
   credentials: true
 };
 
