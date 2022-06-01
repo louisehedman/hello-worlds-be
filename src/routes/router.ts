@@ -22,8 +22,8 @@ router.post('/register', register);
 router.post('/login', login);
 
 // Planet routes
-router.get('/planets', authorization, getAllPlanets);
-router.get('/planets/:planet', authorization, getPlanet);
+router.get('/planets', getAllPlanets);
+router.get('/planets/:planet', getPlanet);
 
 // Protected routes
 router.post('/logout', authorization, logout);
