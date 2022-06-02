@@ -44,10 +44,16 @@ const getTrip = async (req: Request, res: Response) => {
 };
 
 const createTrip = async (req: Request, res: Response) => {
-  const { destination, travTime, departure, firstClass } = req.body;
+  const { destination, travTime, passengers, seat, firstClass } = req.body;
   const { id } = req.params;
 
-  if (destination && travTime && departure && firstClass !== undefined) {
+  if (
+    destination &&
+    travTime &&
+    passengers &&
+    seat &&
+    firstClass !== undefined
+  ) {
     try {
       const user = await User.findById(id);
 
@@ -56,7 +62,7 @@ const createTrip = async (req: Request, res: Response) => {
         {
           tripList: [
             ...user.tripList,
-            { destination, travTime, departure, firstClass },
+            { destination, travTime, passengers, seat, firstClass },
           ],
         },
         { new: true }
@@ -83,10 +89,10 @@ const createTrip = async (req: Request, res: Response) => {
 };
 
 const editTrip = async (req: Request, res: Response) => {
-  const { destination, travTime, departure, firstClass } = req.body;
+  const { destination, travTime, passengers, seat, firstClass } = req.body;
   const { userId, tripId } = req.params;
 
-  if (destination && travTime && departure) {
+  if (destination && travTime && passengers && seat) {
     try {
       const updatedUser = await User.findOneAndUpdate(
         {
@@ -97,8 +103,9 @@ const editTrip = async (req: Request, res: Response) => {
           $set: {
             "tripList.$.destination": destination,
             "tripList.$.travTime": travTime,
-            "tripList.$.departure": departure,
-            "tripList.$.firstClass": firstClass
+            "tripList.$.passengers": passengers,
+            "tripList.$.seat": seat,
+            "tripList.$.firstClass": firstClass,
           },
         },
         { new: true }
