@@ -4,8 +4,9 @@ import { Schema } from "mongoose";
 interface TripInterface {
   _id: ObjectID;
   destination: ObjectID;
+  passengers: number;
+  seat: string;
   travTime: number;
-  departure: string;
   firstClass: boolean;
 }
 
@@ -16,13 +17,18 @@ const TripSchema: Schema = new Schema<TripInterface>(
       unique: false,
       required: true,
     },
-    travTime: {
+    passengers: {
       type: Number,
       unique: false,
       required: true,
     },
-    departure: {
+    seat: {
       type: String,
+      unique: false,
+      required: true,
+    },
+    travTime: {
+      type: Number,
       unique: false,
       required: true,
     },
