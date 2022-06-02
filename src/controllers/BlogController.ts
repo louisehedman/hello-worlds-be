@@ -15,8 +15,8 @@ const getBlogs = (req: Request, res: Response) => {
 };
 
 const getBlog = (req: Request, res: Response) => {
-    Blog.findOne(
-      { name: req.params.blog },
+    Blog.findById(
+      req.params.id,
       function (err: Error, blog: mongoose.Document) {
         if (!blog) {
           return res.status(404).json("No blog");
