@@ -1,41 +1,34 @@
 import { Response, Request, NextFunction } from "express";
 import User from "../database/models/User";
-import { ErrorResponse } from "../utils/errorResponse";
 import jwt from "jsonwebtoken";
 
 const register = async (req: Request, res: Response, next: any) => {
-  const { firstName, username, email, password, isAdmin } = req.body;
   try {
-    const user = await User.create({
-      firstName,
-      username,
-      email,
-      password,
-      isAdmin,
-    });
+    const user = await User.create(req.body);
     user.save().then(() => {
-      res.json({ message: "User created" });
+      res.status(200).json({ message: "User created" });
     });
   } catch (error: any) {
-    next(error);
+    res.status(500).json(error.message);
   }
 };
 
-const login = async (req: Request, res: Response, next: any) => {
+const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return next(
-      new ErrorResponse("Please provide a valid email and Password", 400)
-    );
+    return res.status(400).json("Please provide a valid email and password");
+    // next(new ErrorResponse("Please provide a valid email and Password", 400));
   }
   try {
     const user: any | null = await User.findOne({ email }).select("+password");
     if (!user) {
-      return next(new ErrorResponse("Invalid Credentials", 401));
+      return res.status(404).json("No account is registered with this email");
+      // return next(new ErrorResponse("Invalid Credentials", 401));
     }
     const isMatch: boolean = await user.matchPassword(password);
     if (!isMatch) {
-      return next(new ErrorResponse("Invalid Credentials", 401));
+      return res.status(400).json("Invalid password");
+      // return next(new ErrorResponse("Invalid Credentials", 401));
     }
     if (user) {
       const token = jwt.sign(
@@ -59,12 +52,11 @@ const login = async (req: Request, res: Response, next: any) => {
           // expires: new Date(Date.now() + 5000),
         })
         .status(200)
-        .json({ success: true, _id: user._id });
-    } else {
-      res.json({ message: "Sorry could not log in" });
+        .json({ success: true, user: user.username });
     }
   } catch (error: any) {
-    return next(new ErrorResponse(error.message, 500));
+    return res.status(500).json(error.message);
+    // return next(new ErrorResponse(error.message, 500));
   }
 };
 
@@ -76,11 +68,7 @@ const logout = async (req: Request, res: Response) => {
       "Access-Control-Expose-Headers",
       "date, etag, access-control-allow-origin, access-control-allow-credentials"
     )
-    .clearCookie("access_token", {
-      httpOnly: true,
-      sameSite: "strict",
-      path: "/",
-    })
+    .clearCookie("access_token")
     .status(200)
     .json({ success: true, message: "User logged out" });
 };
@@ -88,13 +76,10 @@ const logout = async (req: Request, res: Response) => {
 const authorization = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.access_token;
 
+  // Will be true if cookie is not sent or expired
   if (!token) {
     return res
-      .clearCookie("access_token", {
-        httpOnly: true,
-        sameSite: "strict",
-        path: "/",
-      })
+      .clearCookie("access_token")
       .status(403)
       .json({ message: "No token" });
   }
@@ -104,8 +89,8 @@ const authorization = (req: Request, res: Response, next: NextFunction) => {
       req.body.id = decoded.id;
     });
     next();
-  } catch {
-    return res.status(403).json({ message: "Error" });
+  } catch (error) {
+    return res.status(500).json("Could not verify token");
   }
 };
 
