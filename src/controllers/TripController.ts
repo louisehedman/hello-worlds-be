@@ -2,8 +2,6 @@ import { Response, Request } from "express";
 import User from "../database/models/User";
 
 const getList = async (req: Request, res: Response) => {
-  // const { id } = req.params;
-
   try {
     const user = await User.findById(req.body.id);
 
@@ -45,7 +43,6 @@ const getTrip = async (req: Request, res: Response) => {
 
 const createTrip = async (req: Request, res: Response) => {
   const { id, destination, travTime, passengers, seat, firstClass } = req.body;
-  // const { id } = req.params;
 
   if (
     destination &&

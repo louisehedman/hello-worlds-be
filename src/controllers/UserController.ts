@@ -2,8 +2,6 @@ import { Response, Request } from "express";
 import User from "../database/models/User";
 
 const getUser = async (req: Request, res: Response) => {
-  // const { id } = req.params;
-
   try {
     const user = await User.findById(req.body.id);
 
