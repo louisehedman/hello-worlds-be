@@ -56,7 +56,7 @@ const login = async (req: Request, res: Response, next: any) => {
           httpOnly: true,
           sameSite: "strict",
           path: "/",
-          // expires: new Date(Date.now() + 50000),
+          // expires: new Date(Date.now() + 5000),
         })
         .status(200)
         .json({ success: true, _id: user._id });
@@ -89,7 +89,14 @@ const authorization = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.access_token;
 
   if (!token) {
-    return res.status(403).json({ message: "No token" });
+    return res
+      .clearCookie("access_token", {
+        httpOnly: true,
+        sameSite: "strict",
+        path: "/",
+      })
+      .status(403)
+      .json({ message: "No token" });
   }
 
   try {
