@@ -2,10 +2,10 @@ import { Response, Request } from "express";
 import User from "../database/models/User";
 
 const getList = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  // const { id } = req.params;
 
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(req.body.id);
 
     if (user) {
       return res.status(200).json({
@@ -24,10 +24,10 @@ const getList = async (req: Request, res: Response) => {
 };
 
 const getTrip = async (req: Request, res: Response) => {
-  const { userId, tripId } = req.params;
+  const { tripId } = req.params;
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(req.body.id);
 
     if (user) {
       const trip = user.tripList.id(tripId);
@@ -44,8 +44,8 @@ const getTrip = async (req: Request, res: Response) => {
 };
 
 const createTrip = async (req: Request, res: Response) => {
-  const { destination, travTime, passengers, seat, firstClass } = req.body;
-  const { id } = req.params;
+  const { id, destination, travTime, passengers, seat, firstClass } = req.body;
+  // const { id } = req.params;
 
   if (
     destination &&
