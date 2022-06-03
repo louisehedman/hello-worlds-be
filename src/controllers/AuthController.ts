@@ -46,14 +46,17 @@ const login = async (req: Request, res: Response, next: any) => {
         }
       );
       return res
-        .set('Access-Control-Allow-Origin', req.headers.origin)
-        .set('Access-Control-Allow-Credentials', 'true')
-        .set('Access-Control-Expose-Headers', 
-           'date, etag, access-control-allow-origin, access-control-allow-credentials')
-        .cookie("access_token", token, { 
+        .set("Access-Control-Allow-Origin", req.headers.origin)
+        .set("Access-Control-Allow-Credentials", "true")
+        .set(
+          "Access-Control-Expose-Headers",
+          "date, etag, access-control-allow-origin, access-control-allow-credentials"
+        )
+        .cookie("access_token", token, {
           httpOnly: true,
-          sameSite: 'strict',
-          path: '/',
+          sameSite: "strict",
+          path: "/",
+          // expires: new Date(Date.now() + 50000),
         })
         .status(200)
         .json({ success: true, _id: user._id });
@@ -67,14 +70,16 @@ const login = async (req: Request, res: Response, next: any) => {
 
 const logout = async (req: Request, res: Response) => {
   return res
-    .set('Access-Control-Allow-Origin', req.headers.origin)
-    .set('Access-Control-Allow-Credentials', 'true')
-    .set('Access-Control-Expose-Headers', 
-        'date, etag, access-control-allow-origin, access-control-allow-credentials')
+    .set("Access-Control-Allow-Origin", req.headers.origin)
+    .set("Access-Control-Allow-Credentials", "true")
+    .set(
+      "Access-Control-Expose-Headers",
+      "date, etag, access-control-allow-origin, access-control-allow-credentials"
+    )
     .clearCookie("access_token", {
       httpOnly: true,
-      sameSite: 'strict',
-      path: '/',
+      sameSite: "strict",
+      path: "/",
     })
     .status(200)
     .json({ success: true, message: "User logged out" });
@@ -88,8 +93,10 @@ const authorization = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const data = jwt.verify(token, process.env.JWT_SECRET);
-    return next();
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+      req.body.id = decoded.id;
+    });
+    next();
   } catch {
     return res.status(403).json({ message: "Error" });
   }
