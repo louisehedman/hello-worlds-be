@@ -52,7 +52,8 @@ const login = async (req: Request, res: Response, next: any) => {
            'date, etag, access-control-allow-origin, access-control-allow-credentials')
         .cookie("access_token", token, { 
           httpOnly: true,
-          sameSite: 'strict',
+          sameSite: 'none',
+          secure: true,
           path: '/',
         })
         .status(200)
@@ -74,6 +75,7 @@ const logout = async (req: Request, res: Response) => {
     .clearCookie("access_token", {
       httpOnly: true,
       sameSite: 'none',
+      secure: true,
       path: '/',
     })
     .status(200)
