@@ -73,7 +73,7 @@ const logout = async (req: Request, res: Response) => {
         'date, etag, access-control-allow-origin, access-control-allow-credentials')
     .clearCookie("access_token", {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'none',
       path: '/',
     })
     .status(200)
