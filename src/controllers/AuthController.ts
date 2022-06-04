@@ -15,7 +15,7 @@ const register = async (req: Request, res: Response, next: any) => {
 
 const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  if (!email || !password) {
+  if (!email) {
     return res.status(400).json("Please provide a valid email and password");
     // next(new ErrorResponse("Please provide a valid email and Password", 400));
   }
@@ -27,7 +27,7 @@ const login = async (req: Request, res: Response) => {
     }
     const isMatch: boolean = await user.matchPassword(password);
     if (!isMatch) {
-      return res.status(400).json("Invalid password");
+      return res.status(401).json("Invalid password");
       // return next(new ErrorResponse("Invalid Credentials", 401));
     }
     if (user) {
