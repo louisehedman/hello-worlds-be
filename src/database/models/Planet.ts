@@ -22,6 +22,7 @@ const planetSchema = new Schema<PlanetInterface>({
   mass: { type: Object },
   grav: { type: Number },
   radius: { type: Number },
+  
   earthDistance: { type: Number },
   shortDescription: { type: String },
   description: { type: String },
