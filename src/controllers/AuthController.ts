@@ -1,41 +1,31 @@
 import { Response, Request, NextFunction } from "express";
 import User from "../database/models/User";
-import { ErrorResponse } from "../utils/errorResponse";
 import jwt from "jsonwebtoken";
 
 const register = async (req: Request, res: Response, next: any) => {
-  const { firstName, username, email, password, isAdmin } = req.body;
   try {
-    const user = await User.create({
-      firstName,
-      username,
-      email,
-      password,
-      isAdmin,
-    });
+    const user = await User.create(req.body);
     user.save().then(() => {
-      res.json({ message: "User created" });
+      res.status(200).json({ message: "User created" });
     });
   } catch (error: any) {
-    next(error);
+    res.status(500).json(error.message);
   }
 };
 
-const login = async (req: Request, res: Response, next: any) => {
+const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    return next(
-      new ErrorResponse("Please provide a valid email and Password", 400)
-    );
+  if (!email) {
+    return res.status(400).json("Please provide a valid email and password");
   }
   try {
     const user: any | null = await User.findOne({ email }).select("+password");
     if (!user) {
-      return next(new ErrorResponse("Invalid Credentials", 401));
+      return res.status(404).json("No account is registered with this email");
     }
     const isMatch: boolean = await user.matchPassword(password);
     if (!isMatch) {
-      return next(new ErrorResponse("Invalid Credentials", 401));
+      return res.status(401).json("Invalid password");
     }
     if (user) {
       const token = jwt.sign(
@@ -46,19 +36,17 @@ const login = async (req: Request, res: Response, next: any) => {
         }
       );
       return res
-        .cookie("access_token", token, { 
+        .cookie("access_token", token, {
           httpOnly: true,
-          sameSite: 'none',
+          sameSite: "none",
           secure: true,
-          path: '/',
+          path: "/",
         })
         .status(200)
-        .json({ success: true, _id: user._id });
-    } else {
-      res.json({ message: "Sorry could not log in" });
+        .json({ success: true, user: user.username });
     }
   } catch (error: any) {
-    return next(new ErrorResponse(error.message, 500));
+    return res.status(500).json(error.message);
   }
 };
 
@@ -66,9 +54,9 @@ const logout = async (req: Request, res: Response) => {
   return res
     .clearCookie("access_token", {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: "none",
       secure: true,
-      path: '/',
+      path: "/",
     })
     .status(200)
     .json({ success: true, message: "User logged out" });
@@ -77,15 +65,21 @@ const logout = async (req: Request, res: Response) => {
 const authorization = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.access_token;
 
+  // Will be true if cookie is not sent or expired
   if (!token) {
-    return res.status(403).json({ message: "No token" });
+    return res
+      .clearCookie("access_token")
+      .status(403)
+      .json({ message: "No token" });
   }
 
   try {
-    const data = jwt.verify(token, process.env.JWT_SECRET);
-    return next();
-  } catch {
-    return res.status(403).json({ message: "Error" });
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+      req.body.id = decoded.id;
+    });
+    next();
+  } catch (error) {
+    return res.status(500).json("Could not verify token");
   }
 };
 
