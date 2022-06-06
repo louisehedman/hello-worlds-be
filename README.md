@@ -40,6 +40,7 @@ To run this project, you will need to add the following environment variables to
 [Project idea](https://docs.google.com/document/d/1AVMP5OK2YgBT46wpgyHdWCBFURYMoxQrOBpvsFkTcWw/edit)
 [Distance and travel time to planets in km](https://docs.google.com/document/d/1_nzSHf9VF5jQHNZj9Hmg9MX6-erocGOc4tKCi8uWee4/edit)
 [General planet info](https://docs.google.com/document/d/1anX7E3fgoCfaRA1R6C05wGHyl_LD8MSEU-Xx3Q2dnew/edit#heading=h.2x0dpo8906gg)
+[Personas](https://docs.google.com/presentation/d/1V6UZIddNoCe0ouqjQf5iNsiiZzXwdz180Lqw-TXuuaw/edit#slide=id.g128f4834786_0_60)
 
 ## Support
 
