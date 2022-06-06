@@ -74,7 +74,7 @@ const authorization = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, async (err: any, decoded: any) => {
       req.body.id = decoded.id;
     });
     next();
