@@ -36,13 +36,6 @@ const login = async (req: Request, res: Response) => {
         }
       );
       return res
-
-        .set("Access-Control-Allow-Origin", req.headers.origin)
-        .set("Access-Control-Allow-Credentials", "true")
-        .set(
-          "Access-Control-Expose-Headers",
-          "date, etag, access-control-allow-origin, access-control-allow-credentials"
-        )
         .cookie("access_token", token, {
           httpOnly: true,
           sameSite: "none",
@@ -59,12 +52,6 @@ const login = async (req: Request, res: Response) => {
 
 const logout = async (req: Request, res: Response) => {
   return res
-    .set("Access-Control-Allow-Origin", req.headers.origin)
-    .set("Access-Control-Allow-Credentials", "true")
-    .set(
-      "Access-Control-Expose-Headers",
-      "date, etag, access-control-allow-origin, access-control-allow-credentials"
-    )
     .clearCookie("access_token", {
       httpOnly: true,
       sameSite: "none",
