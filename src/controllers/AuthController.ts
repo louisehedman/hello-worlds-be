@@ -17,18 +17,15 @@ const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   if (!email) {
     return res.status(400).json("Please provide a valid email and password");
-    // next(new ErrorResponse("Please provide a valid email and Password", 400));
   }
   try {
     const user: any | null = await User.findOne({ email }).select("+password");
     if (!user) {
       return res.status(404).json("No account is registered with this email");
-      // return next(new ErrorResponse("Invalid Credentials", 401));
     }
     const isMatch: boolean = await user.matchPassword(password);
     if (!isMatch) {
       return res.status(401).json("Invalid password");
-      // return next(new ErrorResponse("Invalid Credentials", 401));
     }
     if (user) {
       const token = jwt.sign(
@@ -57,7 +54,6 @@ const login = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     return res.status(500).json(error.message);
-    // return next(new ErrorResponse(error.message, 500));
   }
 };
 
