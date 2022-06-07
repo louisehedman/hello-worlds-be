@@ -41,6 +41,7 @@ const login = async (req: Request, res: Response) => {
           sameSite: "none",
           secure: true,
           path: "/",
+          maxAge: 840000,
         })
         .status(200)
         .json({ success: true, user: user.username });
@@ -74,9 +75,13 @@ const authorization = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET, async (err: any, decoded: any) => {
-      req.body.id = decoded.id;
-    });
+    jwt.verify(
+      token,
+      process.env.JWT_SECRET,
+      async (err: any, decoded: any) => {
+        req.body.id = decoded.id;
+      }
+    );
     next();
   } catch (error) {
     return res.status(500).json("Could not verify token");
