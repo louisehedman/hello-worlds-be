@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import mongoose, { Schema } from "mongoose";
-
+import mongoose, { Schema, Types } from "mongoose";
+import { TripInterface, TripSchema } from './Trip';
 
 interface UserInterface {
     isModified(arg0: string);
@@ -13,6 +13,7 @@ interface UserInterface {
     password: string;
     email: string;
     isAdmin: boolean;
+    tripList: Types.DocumentArray<TripInterface>
 }
 
 const UserSchema: Schema = new Schema<UserInterface>({
@@ -45,6 +46,11 @@ const UserSchema: Schema = new Schema<UserInterface>({
         type: Boolean, 
         default: false,
     },
+    tripList: {
+        type: [TripSchema],
+        required: false
+
+    },
     resetPasswordToken: String,
     resetPasswordExpire: String,
 });
@@ -54,7 +60,7 @@ UserSchema.pre<UserInterface>("save", async function (next: any) {
         return next();
     }
     const salt = await bcrypt.genSalt(10);
-    this.password = bcrypt.hashSync(this.password, 10); //Använda saltet istället för 10?
+    this.password = bcrypt.hashSync(this.password, 10); 
     next();
 });
 
@@ -63,6 +69,5 @@ UserSchema.methods.matchPassword = async function (password:string) {
 }
 
 const User = mongoose.model<UserInterface>("User", UserSchema);
-
 
 export default User;

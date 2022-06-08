@@ -8,10 +8,9 @@ interface PlanetInterface {
   mass: object;
   grav: number;
   radius: number;
-  fromEarth?: number;
-  travTime?: number;
+  earthDistance?: number;
+  shortDescription?: string;
   description?: string;
-  image?: string;
 }
 
 // Mongoose schema
@@ -22,10 +21,9 @@ const planetSchema = new Schema<PlanetInterface>({
   mass: { type: Object },
   grav: { type: Number },
   radius: { type: Number },
-  fromEarth: { type: Number }, // Distance from Earth
-  travTime: { type: Number }, // Travel time from Earth
+  earthDistance: { type: Number },
+  shortDescription: { type: String },
   description: { type: String },
-  image: { type: String },
 });
 
 const Planet = mongoose.model<PlanetInterface>("Planet", planetSchema);
