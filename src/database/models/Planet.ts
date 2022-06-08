@@ -11,7 +11,6 @@ interface PlanetInterface {
   earthDistance?: number;
   shortDescription?: string;
   description?: string;
-  image?: string;
 }
 
 // Mongoose schema
@@ -25,7 +24,6 @@ const planetSchema = new Schema<PlanetInterface>({
   earthDistance: { type: Number },
   shortDescription: { type: String },
   description: { type: String },
-  image: { type: String },
 });
 
 const Planet = mongoose.model<PlanetInterface>("Planet", planetSchema);
