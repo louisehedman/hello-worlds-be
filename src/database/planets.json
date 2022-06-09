@@ -149,8 +149,8 @@
       { "moon": "Styx" }
     ],
     "mass": { "massValue": 1.303, "massExponent": 22 },
-    "gravity": 0.62,
-    "meanRadius": 1188.3,
+    "grav": 0.62,
+    "radius": 1188.3,
     "avgTemp": 44,
     "earthDistance": 5000000000,
     "shortDescription": "Pluto was considered the ninth planet in our solar system but in 2006 scientists changed it to a dwarf planet.",
